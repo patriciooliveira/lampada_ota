@@ -1,12 +1,12 @@
 /*
-4n27
-led
-1 - anodo
-2 - catodo
-transistor
-4 - coleor
-5 - emissor
-6 - case
+  4n27
+  led
+  1 - anodo
+  2 - catodo
+  transistor
+  4 - coleor
+  5 - emissor
+  6 - case
 */
 #include <Arduino.h>
 
@@ -21,12 +21,16 @@ transistor
 #include <WiFiManager.h>
 
 #define evento "/post/dispositivo/"
-#define uuid_dispositivo "lampada002"
+#define uuid_dispositivo "lampada001"
 #define debugar true
 #define luz D2
 
-void light(String);
-void printDebug(String state);
+void Atuar(String);
+void Debug(String);
+void Estado(String);
+void Valor(String);
+
+int valor_luminosidade;
 
 SocketIOClient socket;
 
@@ -43,7 +47,7 @@ unsigned long lastsend = 0;
 
 String JSON;
 StaticJsonBuffer<100> jsonBuffer;
-JsonObject& root = jsonBuffer.createObject();
+
 
 void setup() {
   analogWriteFreq(120);
@@ -91,11 +95,9 @@ void setup() {
   ArduinoOTA.begin();
   Serial.println("Ready");
 
-  root["serial"] = uuid_dispositivo;
-  //  root["time"] = 1351824120;
-  //  JsonArray& data = root.createNestedArray("data");
-  //  data.add(double_with_n_digits(48.756080, 6));
-  //  data.add(double_with_n_digits(2.302038, 6));
+  /// emit reinicio
+  JsonObject& root = jsonBuffer.createObject();
+  root["serial"] = uuid_dispositivo;  //  root["time"] = 1351824120;   //  JsonArray& data = root.createNestedArray("data");  //  data.add(double_with_n_digits(48.756080, 6));  //  data.add(double_with_n_digits(2.302038, 6));
   root.printTo(JSON);
 
   // We start by connecting to a WiFi network
@@ -109,10 +111,10 @@ void setup() {
     Serial.println("\n\n\n\n\nConectou no servidor\n\n\n");
     socket.emit("/post/dispositivo/", JSON);
   }
-  socket.on("atuar", light);
-  socket.on("debug", light);
-  socket.on("estado", light);
-  socket.on("valor", printDebug);
+  socket.on("atuar", Atuar);
+  socket.on("debug", Debug);
+  socket.on("estado", Estado);
+  socket.on("valor", Valor);
 }// end Setup
 
 void loop() {
