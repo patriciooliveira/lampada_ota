@@ -21,7 +21,7 @@
 #include <WiFiManager.h>
 
 #define evento "/post/dispositivo/"
-#define uuid_dispositivo "lampada001"
+#define serial "lampada001"
 #define debugar true
 #define luz D2
 
@@ -97,7 +97,7 @@ void setup() {
 
   /// emit reinicio
   JsonObject& root = jsonBuffer.createObject();
-  root["serial"] = uuid_dispositivo;  //  root["time"] = 1351824120;   //  JsonArray& data = root.createNestedArray("data");  //  data.add(double_with_n_digits(48.756080, 6));  //  data.add(double_with_n_digits(2.302038, 6));
+  root["serial"] = serial;  //  root["time"] = 1351824120;   //  JsonArray& data = root.createNestedArray("data");  //  data.add(double_with_n_digits(48.756080, 6));  //  data.add(double_with_n_digits(2.302038, 6));
   root.printTo(JSON);
 
   // We start by connecting to a WiFi network

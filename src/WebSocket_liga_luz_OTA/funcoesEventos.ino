@@ -27,7 +27,7 @@ void Estado(String state){
 
 void Valor(String state){
   JsonObject& root = jsonBuffer.createObject();
-  root["serial"] = uuid_dispositivo;  //  root["time"] = 1351824120;   //  JsonArray& data = root.createNestedArray("data");  //  data.add(double_with_n_digits(48.756080, 6));  //  data.add(double_with_n_digits(2.302038, 6));
+  root["serial"] = serial;  //  root["time"] = 1351824120;   //  JsonArray& data = root.createNestedArray("data");  //  data.add(double_with_n_digits(48.756080, 6));  //  data.add(double_with_n_digits(2.302038, 6));
   root.printTo(JSON);
 
   socket.emit("/post/dispositivo/", JSON);
